@@ -7,10 +7,10 @@ export function except<T extends Record<string, any>, K extends keyof T>(
   object: T,
   ...props: (K | K[])[]
 ): Omit<T, K> {
-  const keys = props.flat() as K[];
+  const keys = new Set<PropertyKey>(props.flat());
   const result = {} as Omit<T, K>;
   for (const key in object) {
-    if (!keys.includes(key as unknown as K)) {
+    if (!keys.has(key)) {
       (result as any)[key] = object[key];
     }
   }
